@@ -18,4 +18,8 @@ router.get('/books', (req, res, next) => {
       console.log(error);
     });
 });
+
+router.get('/book/:id', (req, res, next) => {
+  res.render("book-detail");
+});
 module.exports = router;
