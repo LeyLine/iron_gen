@@ -21,11 +21,56 @@ router.get("/books", (req, res, next) => {
 
 router.get("/book/:id", (req, res, next) => {
   let bookId = req.params.id;
-  Book.findOne({ _id: bookId })
+  Book.findOne({
+      _id: bookId
+    })
     .then(book => {
-      res.render("book-detail", { book });
+      res.render("book-detail", {
+        book
+      });
     })
     .catch(error => {
+      console.log(error);
+    });
+});
+
+
+router.get('/books/add', (req, res, next) => {
+  res.render("book-add");
+});
+
+router.post('/books/add', (req, res, next) => {
+  const {
+    title,
+    author,
+    description,
+    rating
+  } = req.body;
+  const newBook = new Book({
+    title,
+    author,
+    description,
+    rating
+  });
+  newBook.save()
+    .then((book) => {
+      res.redirect('/books');
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+});
+
+router.get('/books/edit', (req, res, next) => {
+  Book.findOne({
+      _id: req.query.book_id
+    })
+    .then((book) => {
+      res.render("book-edit", {
+        book
+      });
+    })
+    .catch((error) => {
       console.log(error);
     });
 });
